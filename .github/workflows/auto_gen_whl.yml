@@ -3,47 +3,66 @@ name: Python package
 on:
   push:
     branches:
-      - master
-  pull_request:
-    branches:
-      - master
-    types:
-      - ready_for_review
-      - review_requested
+      - dev
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions: write-all
+
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9"]
+
     steps:
       - uses: actions/checkout@v2
       - name: Publish Python Package
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: ${{ matrix.python-version }}
           publish-package: true
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        working-directory: 
+        run: |
+          cd ${{ github.workspace }}/src
+          pip install ase numpy==1.21.6 scikit-learn setuptools wheel
+          pip install https://raw.githubusercontent.com/stanfordbshan/HTMACat-kit/master/requires_wheel/FireWorks-2.0.3-py3-none-any.whl
+          pip install https://raw.githubusercontent.com/stanfordbshan/HTMACat-kit/master/requires_wheel/CatKit-0.5.4-py3-none-any.whl
+          python setup.py bdist_wheel
+          cd ${{ github.workspace }}/src/dist
+          pip install *.whl
+
+      # - name: Test with pytest
+      #   run: |
+      #     cd ${{ github.workspace }}/example/coadsorption
+      #     coads
+      #     cd ${{ github.workspace }}/example/adsorption
+      #     ads
 
       - name: Build wheel and source distribution
         run: |
           cd src
-          pip install setuptools wheel
           python setup.py sdist bdist_wheel
 
-      - name: Release version
-        id: release_version
-        run: |
-          cd src
-          app_version=$(cat setup.py | grep version | sed "s/version='\([0-9]\+\.[0-9]\+\.[0-9]\+\)',/\1/" | sed s/[[:space:]]//g)
-          echo "app_version=$app_version" >> $GITHUB_ENV
-          echo "app_version=$app_version"
-
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: src/dist/*.whl
-          tag: v${{env.app_version}}
-          release_name: v${{env.app_version}}
-          overwrite: true
-          file_glob: true
-          body: ${{github.event.commits[0].message}}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload wheel and source distribution
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheel and source distribution
+          path: |
+            src/dist/*
