@@ -9,12 +9,6 @@ def Construct_coadsorption(Path_Info,Model,spec_ads_stable):
     Ele_dop=model.readline().split()
     Natom_dop=model.readline().split()
     Ads=model.readline().split(';')
-    SML = False
-    if 'SML' == Ads[0].split()[0]:
-       SML = True
-       Ads[0] = Ads[0][3:]
-    else:
-       pass
     Index=model.readline().split(';')
     model.close()
     LatInfo = open(Path_Info,"r+")
@@ -47,11 +41,11 @@ def Construct_coadsorption(Path_Info,Model,spec_ads_stable):
                    ads=ads.strip() 
                    ads_symb='_'.join(ads.split(' '))
                    if Index[k].strip() == '1 1':
-                      slabs_ads=Construct_coadsorption_11(slabs,ads,dis_inter,spec_ads_stable,SML) 
+                      slabs_ads=Construct_coadsorption_11(slabs,ads,dis_inter,spec_ads_stable) 
                    elif Index[k].strip() == '1 2':
-                      slabs_ads=Construct_coadsorption_12(slabs,ads,dis_inter,SML)
+                      slabs_ads=Construct_coadsorption_12(slabs,ads,dis_inter)
                    elif Index[k].strip() == '2 2':
-                      slabs_ads=Construct_coadsorption_22(slabs,ads,dis_inter,SML)
+                      slabs_ads=Construct_coadsorption_22(slabs,ads,dis_inter)
                    #view(slabs_ads) 
                    for m,slab_ad in enumerate(slabs_ads):
                       #write_vasp("%s_%s_%s_%s_%s.vasp" %(mname,mfacet,natom_dop,ads_symb,m), slab_ad, direct=True, sort=[''], vasp5=True)
@@ -65,11 +59,11 @@ def Construct_coadsorption(Path_Info,Model,spec_ads_stable):
                    ads=ads.strip()
                    ads_symb='_'.join(ads.split(' '))
                    if Index[k].strip() == '1 1':
-                      slabs_ads=Construct_coadsorption_11(slabs,ads,dis_inter,spec_ads_stable,SML)
+                      slabs_ads=Construct_coadsorption_11(slabs,ads,dis_inter,spec_ads_stable)
                    elif Index[k].strip() == '1 2':
-                      slabs_ads=Construct_coadsorption_12(slabs,ads,dis_inter,SML)
+                      slabs_ads=Construct_coadsorption_12(slabs,ads,dis_inter)
                    elif Index[k].strip() == '2 2':
-                      slabs_ads=Construct_coadsorption_22(slabs,ads,dis_inter,SML)
+                      slabs_ads=Construct_coadsorption_22(slabs,ads,dis_inter)
                    for m,slab_ad in enumerate(slabs_ads):
                       write_vasp("%s_%s_%s_b1_%s.vasp" %(mname,mfacet,ads_symb,m), slab_ad, direct=True, sort=[''], vasp5=True)
                    print("%s %s adsorption on b1 doped systemare finished!" %(ads_symb,m+1))
@@ -82,11 +76,11 @@ def Construct_coadsorption(Path_Info,Model,spec_ads_stable):
                    ads=ads.strip() 
                    ads_symb='_'.join(ads.split(' '))
                    if Index[k].strip() == '1 1':
-                      slabs_ads=Construct_coadsorption_11(slabs_dop,ads,dis_inter,spec_ads_stable,SML)
+                      slabs_ads=Construct_coadsorption_11(slabs_dop,ads,dis_inter,spec_ads_stable)
                    elif Index[k].strip() == '1 2':
-                      slabs_ads=Construct_coadsorption_12(slabs_dop,ads,dis_inter,SML)
+                      slabs_ads=Construct_coadsorption_12(slabs_dop,ads,dis_inter)
                    elif Index[k].strip() == '2 2':
-                      slabs_ads=Construct_coadsorption_22(slabs_dop,ads,dis_inter,SML)
+                      slabs_ads=Construct_coadsorption_22(slabs_dop,ads,dis_inter)
                    #view(slabs_ads)
                    for m,slab_ad in enumerate(slabs_ads):
                       write_vasp("%s_%s_%s_%s_%s_%s.vasp" %(mname,ele_dop,mfacet,natom_dop,ads_symb,m), slab_ad, direct=True, sort=[''], vasp5=True)
@@ -100,11 +94,11 @@ def Construct_coadsorption(Path_Info,Model,spec_ads_stable):
                    ads=ads.strip()
                    ads_symb='_'.join(ads.split(' '))
                    if Index[k].strip() == '1 1':
-                      slabs_ads=Construct_coadsorption_11(slabs_dop,ads,dis_inter,spec_ads_stable,SML)
+                      slabs_ads=Construct_coadsorption_11(slabs_dop,ads,dis_inter,spec_ads_stable)
                    elif Index[k].strip() == '1 2':
-                      slabs_ads=Construct_coadsorption_12(slabs_dop,ads,dis_inter,SML)
+                      slabs_ads=Construct_coadsorption_12(slabs_dop,ads,dis_inter)
                    elif Index[k].strip() == '2 2':
-                      slabs_ads=Construct_coadsorption_22(slabs_dop,ads,dis_inter,SML)
+                      slabs_ads=Construct_coadsorption_22(slabs_dop,ads,dis_inter)
                    ## To choose the config whose neighbor list includes the doped atoms
                    slabs_ads_near=[]
                    for slb in slabs_ads:
