@@ -69,7 +69,7 @@ jobs:
 
       - name: Replace the install link and Update Readme
         run: |
-          sed -i 's~https://github.com/[^/]*/[^/]*/releases/download/[^/]*/HTMACat-[^"]*~'"${{ env.RELEASE_DOWNLOAD_LINK }}"'~g' README.md
+          sed -i 's~https://github.com/[^/]*/[^/]*/releases/download/[^/]*/HTMACat-[^"]*~'${{env.RELEASE_DOWNLOAD_LINK}}'~g' README.md
       
 
       - name: Commit changes
