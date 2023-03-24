@@ -17,9 +17,8 @@ If you haven‘t installed **Python3.x** yet, [download](https://www.python.org)
 ```shell
 pip install ase numpy==1.23.5 scikit-learn
 pip install https://raw.githubusercontent.com/stanfordbshan/HTMACat-kit/master/requires_wheel/FireWorks-2.0.3-py3-none-any.whl
-pip install https://raw.githubusercontent.com/stanfordbshan/HTMACat-kit/master/requires_wheel/CatKit-0.5.4-py3-none-any.requires_wheel
-pip install 
-
+pip install https://raw.githubusercontent.com/stanfordbshan/HTMACat-kit/master/requires_wheel/CatKit-0.5.4-py3-none-any.whl
+pip install https://github.com/stanfordbshan/HTMACat/releases/download/v1.1.2/HTMACat-1.2.2-py3-none-any.whl
 ```
 
 # Getting started
